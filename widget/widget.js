@@ -256,7 +256,7 @@
         "--nv-on-accent:" + onAccent + ";" +
         "}" +
         /* Critical inline styles to prevent FOUC before widget.css loads */
-        ".nv-panel{opacity:0!important;transform:scale(0.8)!important;pointer-events:none!important;}";
+        ".nv-panel{opacity:0;transform:scale(0.8);pointer-events:none;}";
 
       var avatar = config.avatar_url
         ? '<img class="nv-avatar" src="' + esc(config.avatar_url) + '" alt="">'
