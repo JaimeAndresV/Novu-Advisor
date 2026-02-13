@@ -14,6 +14,26 @@
   function esc(s) { return String(s || "").replace(/[&<>"']/g, function (m) { return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]; }); }
   function isRtlDoc() { return (document.documentElement.getAttribute("dir") || "").toLowerCase() === "rtl"; }
   function safeUrl(url) { try { var u = new URL(url, location.href); return /^https?:|^mailto:|^tel:/.test(u.protocol + "") ? u.toString() : "#"; } catch (_) { return "#"; } }
+  function detectPageLanguage() {
+    var htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
+    var metaLangEl = document.querySelector('meta[http-equiv="content-language"]');
+    var metaLang = (metaLangEl && metaLangEl.getAttribute("content") || "").toLowerCase();
+    var candidate = htmlLang || metaLang || (config && config.language) || (navigator.language || "en");
+    var lang = String(candidate).split(/[-_,;]/)[0].trim();
+    return lang || "en";
+  }
+  function localizedGreeting(lang, consultantName, consultantRole, businessName) {
+    if (lang === "es") {
+      return "Hola, soy <b>" + consultantName + "</b>, " + consultantRole + " en " + businessName + ". ¿En qué puedo ayudarte hoy? 👋";
+    }
+    if (lang === "pt") {
+      return "Oi! Eu sou <b>" + consultantName + "</b>, " + consultantRole + " na " + businessName + ". Como posso ajudar você hoje? 👋";
+    }
+    if (lang === "fr") {
+      return "Bonjour ! Je suis <b>" + consultantName + "</b>, " + consultantRole + " chez " + businessName + ". Comment puis-je vous aider aujourd'hui ? 👋";
+    }
+    return "Hi! I'm <b>" + consultantName + "</b>, " + consultantRole + " at " + businessName + ". How can I help you today? 👋";
+  }
   function contrastText(hex, dark, light) {
     var color = String(hex || "").trim().replace("#", "");
     if (color.length === 3) color = color.split("").map(function (c) { return c + c; }).join("");
@@ -114,7 +134,13 @@
     if (!greeted) {
       greeted = true;
       setTimeout(function () {
-        var g = config.widget_greeting || ("Hi! I'm <b>" + esc(config.consultant_name || "Advisor") + "</b>, " + esc(config.consultant_role || "Consultant") + " at " + esc(config.name || "our business") + ". How can I help you today? 👋");
+        var lang = detectPageLanguage();
+        var g = config.widget_greeting || localizedGreeting(
+          lang,
+          esc(config.consultant_name || "Advisor"),
+          esc(config.consultant_role || "Consultant"),
+          esc(config.name || "our business")
+        );
         renderBotMessage(g);
       }, 800);
     }
@@ -145,7 +171,7 @@
     } else {
       s += "right:24px;left:auto;";
     }
-    s += "top:auto;display:block;margin:0;padding:0;border:none;background:none;font-size:16px;line-height:normal;box-sizing:border-box;overflow:visible;";
+    s += "top:auto;display:block;margin:0;padding:0;border:none;background:none;font-size:16px;line-height:normal;box-sizing:border-box;overflow:visible;visibility:hidden;opacity:0;";
     root.style.cssText = s;
   }
 
@@ -258,17 +284,25 @@
 
       bindEvents();
 
-      // Give the browser a frame to render, then verify position
-      setTimeout(function () {
+      var shown = false;
+      function revealWidget() {
+        if (shown) return;
+        shown = true;
         root.classList.add("nv-visible");
-
-        // Stage 2: verify fixed actually worked
+        root.style.visibility = "visible";
+        root.style.opacity = "1";
+        // Stage 2: verify fixed actually worked after first paint
         requestAnimationFrame(function () {
           setTimeout(function () {
             verifyAndFix();
           }, 50);
         });
-      }, 150);
+      }
+
+      // Prevent unstyled flash: show only after CSS loads.
+      link.onload = revealWidget;
+      // Safety fallback in case CSS onload does not fire.
+      setTimeout(revealWidget, 1200);
     });
   }
 

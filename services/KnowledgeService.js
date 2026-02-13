@@ -58,7 +58,9 @@ class KnowledgeService {
       : 0;
     const similarityScore = textSimilarity(query, content);
     const base = Number(chunk.relevance_score) || 1;
-    const score = base + overlapScore * 1.5 + similarityScore * 2;
+    const pricingQuery = this.isPricingQuery(query);
+    const pricingBonus = pricingQuery ? this.pricingSignalBonus(`${title}\n${content}`, sourceKeywords) : 0;
+    const score = base + overlapScore * 1.5 + similarityScore * 2 + pricingBonus;
 
     return {
       ...chunk,
@@ -78,12 +80,26 @@ class KnowledgeService {
     }
 
     const queryKeywords = extractKeywords(q, 12, 3);
+    const isPricing = this.isPricingQuery(q);
     const scored = allChunks
       .map((chunk) => this.scoreChunk(chunk, q, queryKeywords))
-      .filter((chunk) => chunk.score > 1.05)
+      .filter((chunk) => chunk.score > (isPricing ? 0.95 : 1.05))
       .sort((a, b) => b.score - a.score);
 
     return scored.slice(0, Math.max(1, topK));
+  }
+
+  isPricingQuery(query) {
+    return /(price|pricing|cost|costs|quote|budget|fees|plans?|package|packages?|precio|precios|costo|costos|cotizacion|cotización|plan(es)?|paquete(s)?|tarifa(s)?)/i.test(String(query || ""));
+  }
+
+  pricingSignalBonus(text, keywords = []) {
+    const source = `${String(text || "")}\n${(keywords || []).join(" ")}`;
+    let bonus = 0;
+    if (/(\$|€|£|¥|usd|eur|mxn|cop|ars|pen|s\/)/i.test(source)) bonus += 0.6;
+    if (/(\b\d{1,4}([.,]\d{1,2})?\b)/.test(source)) bonus += 0.35;
+    if (/(mensual|anual|monthly|yearly|\/mo|\/mes|plan|paquete|pricing|precio|price)/i.test(source)) bonus += 0.45;
+    return bonus;
   }
 
   formatForPrompt(results = []) {

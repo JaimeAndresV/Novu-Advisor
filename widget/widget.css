@@ -311,13 +311,13 @@
 .nv-channel {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #cbd5e1;
-  background: #ffffff;
+  border: 1px solid transparent;
+  background: var(--nv-primary);
   padding: 10px 12px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--nv-on-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -326,9 +326,9 @@
 }
 
 .nv-channel:hover {
-  background: #f8fafc;
+  filter: brightness(1.08);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
 }
 
 /* ========================================
