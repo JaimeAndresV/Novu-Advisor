@@ -34,6 +34,28 @@ function signBusinessToken(business) {
   return jwt.sign(buildTokenPayload(business), secret, { expiresIn: "7d" });
 }
 
+function setAuthCookie(res, token) {
+  const isProduction = process.env.NODE_ENV === "production";
+  const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+  res.cookie("nv_jwt", token, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: "lax",
+    maxAge,
+    path: "/"
+  });
+}
+
+function clearAuthCookie(res) {
+  res.cookie("nv_jwt", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 0,
+    path: "/"
+  });
+}
+
 router.post("/login", async (req, res) => {
   try {
     const businessId = String(req.body?.business_id || "").trim();
@@ -63,6 +85,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = signBusinessToken(business);
+    setAuthCookie(res, token);
     return res.json({ token });
   } catch (error) {
     return res.status(500).json({
@@ -95,10 +118,17 @@ router.post("/master-login", (req, res) => {
       return res.status(404).json({ error: true, message: "Business not found." });
     }
 
-    return res.json({ token: signBusinessToken(business) });
+    const token = signBusinessToken(business);
+    setAuthCookie(res, token);
+    return res.json({ token });
   } catch (error) {
     return res.status(500).json({ error: true, message: error.message || "Unable to complete master login." });
   }
+});
+
+router.post("/logout", (req, res) => {
+  clearAuthCookie(res);
+  return res.json({ ok: true, message: "Logged out." });
 });
 
 module.exports = router;

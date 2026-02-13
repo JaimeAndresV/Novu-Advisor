@@ -46,11 +46,31 @@
     }
   }
 
+  async function logout() {
+    try {
+      await fetch(state.apiUrl.replace(/\/$/, "") + "/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" }
+      });
+    } catch (_) {}
+    setState({ jwt: "", businessId: "", adminPassword: "" });
+    window.location.href = "./";
+  }
+
   window.NovuDashboard = {
     state,
     setState,
     api,
     ensureJwt,
-    fmtDate
+    fmtDate,
+    logout
   };
+
+  document.querySelectorAll("[data-logout]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      logout();
+    });
+  });
 })();

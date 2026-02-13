@@ -6,6 +6,10 @@ function extractToken(req) {
     return authHeader.slice(7).trim();
   }
 
+  if (req.cookies && req.cookies.nv_jwt) {
+    return String(req.cookies.nv_jwt).trim();
+  }
+
   if (req.query && req.query.token) {
     return String(req.query.token);
   }

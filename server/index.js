@@ -2,10 +2,13 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 require("../db/database");
 
 const { widgetCors, staticAssetHeaders } = require("../middleware/cors");
 const { chatRateLimiter } = require("../middleware/rateLimit");
+const { extractToken } = require("../middleware/auth");
 const notifyService = require("../services/NotifyService");
 const reportService = require("../services/ReportService");
 
@@ -26,6 +29,7 @@ app.set("trust proxy", 1);
 app.disable("x-powered-by");
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+app.use(cookieParser());
 app.use(widgetCors);
 app.use(staticAssetHeaders);
 
@@ -59,13 +63,31 @@ app.use(
   })
 );
 
-app.use(
-  "/dashboard",
-  express.static(dashboardDir, {
-    extensions: ["html", "js", "css"],
-    etag: true
-  })
-);
+// Dashboard: only login (index /) and setup.html are public; other HTML requires valid JWT (cookie or header)
+const dashboardPublicPaths = ["/", "/index.html", "/setup.html"];
+function dashboardAuthGuard(req, res, next) {
+  const p = req.path === "" || req.path === "/" ? "/" : req.path;
+  const isHtmlPage = p.endsWith(".html") || p === "/";
+  if (!isHtmlPage) return next();
+
+  const isPublic = dashboardPublicPaths.some((pub) => p === pub || p.endsWith(pub));
+  if (isPublic) return next();
+
+  const token = extractToken(req);
+  const secret = process.env.JWT_SECRET || "";
+  if (!token || !secret) return res.redirect(302, "/dashboard/");
+  try {
+    jwt.verify(token, secret);
+    return next();
+  } catch (_) {
+    return res.redirect(302, "/dashboard/");
+  }
+}
+
+app.use("/dashboard", dashboardAuthGuard, express.static(dashboardDir, {
+  extensions: ["html", "js", "css"],
+  etag: true
+}));
 
 app.get("/", (req, res) => {
   res.json({
