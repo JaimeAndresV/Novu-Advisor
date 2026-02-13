@@ -48,20 +48,40 @@ After setup is saved, continue with:
 
 **Step 5** - Install on your website
 
-Copy the generated 2-line snippet from the setup dashboard and paste it before `</body>`:
+Copy the snippet from the client advisor page and paste it before `</body>`:
 
 ```html
-<link rel="stylesheet" href="https://YOUR-DOMAIN.com/widget/widget.css">
-<script src="https://YOUR-DOMAIN.com/widget/widget.js" data-business-id="BUSINESS_UUID" data-api-url="https://YOUR-DOMAIN.com" data-position="bottom-right"></script>
+<script src="https://YOUR-DOMAIN.com/widget/widget.js" data-business-id="BUSINESS_UUID" data-api-url="https://YOUR-DOMAIN.com"></script>
 ```
 
-Important: install with `link + script` only. Do not use an iframe.
+Important:
+- Use only the script tag (do not add a separate CSS link).
+- Do not use an iframe.
 
 ## Deploy options
 
-- Railway (recommended): connect repository and deploy
-- Render: free tier available
+- Railway (recommended for QA)
+- Render (free tier available, with limitations)
 - Any VPS with Node.js 18+
+
+## Railway QA deployment (fast path)
+
+1. Go to Railway and create a new project from GitHub repository:
+   - Repo: `JaimeAndresV/Novu-Advisor`
+   - Branch: `qa`
+2. Add a persistent Volume and mount it at `/data`.
+3. Set environment variables in Railway service:
+   - `NODE_ENV=production`
+   - `DB_PATH=/data/novu.db`
+   - `JWT_SECRET=<strong-random-secret>`
+   - `ADMIN_MASTER_KEY=<master-key>`
+   - `OPENAI_API_KEY=<or ANTHROPIC_API_KEY>`
+   - `BASE_URL=https://<your-railway-domain>`
+4. Redeploy service.
+5. Smoke test:
+   - `https://<your-railway-domain>/health`
+   - `https://<your-railway-domain>/dashboard/setup.html`
+   - Create client -> configure advisor -> test widget snippet.
 
 ## Project structure
 
