@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novu Advisor - Setup</title>
+  <link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body>
+  <div class="db-app">
+    <aside class="db-sidebar">
+      <div class="db-brand">Novu Advisor</div>
+      <nav class="db-nav">
+        <a href="./clients.html">Clients</a>
+        <a class="db-active" href="./setup.html">Setup</a>
+        <a href="./advisor.html">Advisor</a>
+        <a href="./conversations.html">Conversations</a>
+        <a href="./report.html">Report</a>
+      </nav>
+    </aside>
+
+    <main class="db-main">
+      <header class="db-topbar">
+        <div>
+          <h1 class="db-title">Business Onboarding</h1>
+          <p class="db-subtitle">Create your advisor in about 5 minutes.</p>
+        </div>
+      </header>
+
+      <div class="db-stepper">
+        <div class="db-step db-current">1. Business</div>
+        <div class="db-step">2. Advisor</div>
+        <div class="db-step">3. Contact & Install</div>
+      </div>
+
+      <form id="setup-form" class="db-grid">
+        <section class="db-card" data-step="1">
+          <h2 style="margin-top:0;">Tell us about your business</h2>
+          <div class="db-grid db-grid-2">
+            <div>
+              <label class="db-label" for="name">Business Name</label>
+              <input id="name" class="db-input" required>
+            </div>
+            <div>
+              <label class="db-label" for="industry">Industry</label>
+              <select id="industry" class="db-select">
+                <option value="dental">🦷 Dental</option>
+                <option value="legal">⚖️ Legal</option>
+                <option value="real_estate">🏠 Real Estate</option>
+                <option value="ecommerce">🛒 E-commerce</option>
+                <option value="medical">🏥 Medical</option>
+                <option value="saas">💻 SaaS</option>
+                <option value="restaurant">🍕 Restaurant</option>
+                <option value="education">📚 Education</option>
+                <option value="consulting">💼 Consulting</option>
+                <option value="construction">🏗️ Construction</option>
+                <option value="beauty">💇 Beauty & Wellness</option>
+                <option value="other">🎓 Other</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <label class="db-label" for="description">Business Description</label>
+            <textarea id="description" class="db-textarea" placeholder="Describe your business, what you do, who you serve, and what makes you different. The more detail, the better your advisor responds."></textarea>
+          </div>
+          <div class="db-grid db-grid-2" style="margin-top:10px;">
+            <div>
+              <label class="db-label" for="language">Primary Language</label>
+              <select id="language" class="db-select">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+              </select>
+            </div>
+            <div>
+              <label class="db-label" for="website_url">Website URL</label>
+              <input id="website_url" class="db-input" placeholder="https://your-site.com">
+            </div>
+          </div>
+          <div class="db-grid db-grid-2" style="margin-top:10px;">
+            <div>
+              <label class="db-label" for="setup_api_url">API URL</label>
+              <input id="setup_api_url" class="db-input db-mono" placeholder="https://your-domain.com">
+            </div>
+            <div>
+              <label class="db-label" for="master_key">Admin Master Key (if required)</label>
+              <input id="master_key" class="db-input" type="password" placeholder="Optional for protected deployments">
+            </div>
+          </div>
+          <div class="db-row" style="margin-top:14px;justify-content:flex-end;">
+            <button type="button" class="db-btn db-btn-dark" data-next>Continue</button>
+          </div>
+        </section>
+
+        <section class="db-card" data-step="2" style="display:none;">
+          <h2 style="margin-top:0;">Configure your advisor</h2>
+          <div class="db-grid db-grid-2">
+            <div>
+              <label class="db-label" for="consultant_name">Consultant Name</label>
+              <input id="consultant_name" class="db-input" value="Alex">
+            </div>
+            <div>
+              <label class="db-label" for="consultant_role">Consultant Role</label>
+              <input id="consultant_role" class="db-input" value="Business Advisor">
+            </div>
+            <div>
+              <label class="db-label" for="primary_color">Primary Color</label>
+              <input id="primary_color" class="db-input" type="color" value="#1a3a5c">
+            </div>
+            <div>
+              <label class="db-label" for="accent_color">Accent Color</label>
+              <input id="accent_color" class="db-input" type="color" value="#c8a84b">
+            </div>
+          </div>
+
+          <div class="db-preview" style="margin-top:14px;">
+            <div class="db-preview-widget">
+              <div id="pv-head" class="db-preview-head">
+                <div id="pv-name"><b>Alex</b></div>
+                <div id="pv-role" style="opacity:.85;">Business Advisor</div>
+              </div>
+              <div class="db-preview-body">
+                <div class="db-bubble db-bubble-bot">Hi! How can I help you today?</div>
+                <div class="db-row" style="justify-content:flex-end;margin-top:12px;">
+                  <button id="pv-send" type="button" class="db-btn" style="background:#c8a84b;">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="db-row" style="margin-top:14px;justify-content:space-between;">
+            <button type="button" class="db-btn db-btn-outline" data-back>Back</button>
+            <button type="button" class="db-btn db-btn-dark" data-next>Continue</button>
+          </div>
+        </section>
+
+        <section class="db-card" data-step="3" style="display:none;">
+          <h2 style="margin-top:0;">Add contact channels</h2>
+          <p class="db-subtitle">Fill only the channels your business actually uses.</p>
+          <div class="db-channel-grid">
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_phone">📞 Phone</label>
+              <input id="contact_phone" class="db-input" placeholder="+1 555 123 4567">
+            </div>
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_email">✉️ Email</label>
+              <input id="contact_email" class="db-input" placeholder="sales@business.com">
+            </div>
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_whatsapp">💬 WhatsApp URL</label>
+              <input id="contact_whatsapp" class="db-input" placeholder="https://wa.me/...">
+            </div>
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_telegram">✈️ Telegram URL</label>
+              <input id="contact_telegram" class="db-input" placeholder="https://t.me/...">
+            </div>
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_calendly">📅 Calendly URL</label>
+              <input id="contact_calendly" class="db-input" placeholder="https://calendly.com/...">
+            </div>
+            <div class="db-channel-item">
+              <label class="db-label" for="contact_form_url">🌐 Contact Form URL</label>
+              <input id="contact_form_url" class="db-input" placeholder="https://your-site.com/contact">
+            </div>
+          </div>
+
+          <div class="db-row" style="margin-top:14px;justify-content:space-between;">
+            <button type="button" class="db-btn db-btn-outline" data-back>Back</button>
+            <button type="submit" class="db-btn db-btn-primary">Save & Get Install Code</button>
+          </div>
+
+          <div style="margin-top:14px;">
+            <label class="db-label" for="install_snippet">Install Snippet</label>
+            <textarea id="install_snippet" class="db-textarea db-mono" readonly placeholder="Your 2-line install snippet will appear here after save."></textarea>
+            <p class="db-subtitle" style="margin-top:8px;">
+              Install with <b>script + stylesheet</b>. Do not use iframe for the widget.
+            </p>
+          </div>
+          <div style="margin-top:10px;">
+            <label class="db-label" for="master_key_2">Admin Master Key (retry if needed)</label>
+            <input id="master_key_2" class="db-input" type="password" placeholder="Same value as server ADMIN_MASTER_KEY">
+          </div>
+
+          <div id="setup_success" class="db-card" style="display:none;margin-top:12px;border-color:#bbf7d0;background:#f0fdf4;">
+            <h3 style="margin-top:0;">✅ Configuration saved</h3>
+            <p class="db-subtitle" style="margin:0 0 8px;">
+              Your business is now registered. Next, configure and train your advisor before installing on your website.
+            </p>
+            <div class="db-grid db-grid-2">
+              <div>
+                <label class="db-label">Business ID</label>
+                <div id="saved_business_id" class="db-input db-mono" style="background:#fff;"></div>
+              </div>
+              <div>
+                <label class="db-label">Admin Password</label>
+                <div id="saved_admin_password" class="db-input db-mono" style="background:#fff;"></div>
+              </div>
+            </div>
+            <div class="db-row" style="justify-content:flex-end;margin-top:10px;">
+              <a class="db-btn db-btn-dark" href="./advisor.html">Go to Advisor Configuration</a>
+            </div>
+          </div>
+        </section>
+      </form>
+    </main>
+  </div>
+  <script src="./assets/dashboard.core.js"></script>
+  <script src="./assets/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novu Advisor - Business Intelligence Report</title>
+  <link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body>
+  <div class="db-app">
+    <aside class="db-sidebar">
+      <div class="db-brand">Novu Advisor</div>
+      <nav class="db-nav">
+        <a href="./clients.html">Clients</a>
+        <a href="./setup.html">Setup</a>
+        <a href="./advisor.html">Advisor</a>
+        <a href="./conversations.html">Conversations</a>
+        <a class="db-active" href="./report.html">Report</a>
+      </nav>
+    </aside>
+
+    <main class="db-main">
+      <header class="db-topbar">
+        <div>
+          <h1 class="db-title">Business Intelligence</h1>
+          <p class="db-subtitle">What your visitor conversations reveal about conversion opportunities.</p>
+        </div>
+        <button class="db-btn db-btn-outline" onclick="window.print()">📥 Download Full Report (PDF)</button>
+      </header>
+
+      <!-- Active Client Header -->
+      <section class="db-card" style="background:#0f172a;color:#fff;padding:16px 24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div style="font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ACTIVE CLIENT</div>
+            <div style="font-size:20px;font-weight:700;" id="active_client_name">—</div>
+            <div style="font-size:12px;opacity:0.7;font-family:monospace;margin-top:2px;" id="active_client_id">—</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <a href="./advisor.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Profile & Advisor</a>
+            <a href="./conversations.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Conversations</a>
+            <a href="./report.html" class="db-btn" style="background:#c8a84b;color:#0f172a;font-weight:600;border:none;">Report</a>
+            <a href="./clients.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);margin-left:8px;">← Clients</a>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);font-size:13px;opacity:0.8;">
+          <b>Website:</b> <span id="active_client_url" style="font-family:monospace;">—</span>
+        </div>
+      </section>
+
+      <section class="db-grid db-grid-4">
+        <article class="db-card">
+          <div class="db-kpi-value" id="kpi_total">0</div>
+          <div class="db-kpi-label">Total Conversations</div>
+        </article>
+        <article class="db-card">
+          <div class="db-kpi-value" id="kpi_leads">0</div>
+          <div class="db-kpi-label">Leads Captured</div>
+        </article>
+        <article class="db-card">
+          <div class="db-kpi-value" id="kpi_conv">0%</div>
+          <div class="db-kpi-label">Conversion Rate</div>
+        </article>
+        <article class="db-card">
+          <div class="db-kpi-value" id="kpi_avg">0</div>
+          <div class="db-kpi-label">Avg Messages</div>
+        </article>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Conversations per day (last 30 days)</h2>
+        <div id="activity_bars" class="db-activity"></div>
+      </section>
+
+      <section class="db-grid db-grid-2" style="margin-top:14px;">
+        <article class="db-card">
+          <h3 style="margin-top:0;">What your visitors ask most</h3>
+          <ol id="top_questions" class="db-list"></ol>
+        </article>
+        <article class="db-card">
+          <h3 style="margin-top:0;">Knowledge gaps</h3>
+          <p class="db-subtitle">These topics are likely missing from your website.</p>
+          <ul id="knowledge_gaps" class="db-list"></ul>
+          <div class="db-row" style="justify-content:flex-end;margin-top:12px;">
+            <a class="db-btn db-btn-primary" href="./advisor.html">Add to knowledge base</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="db-card db-insights" style="margin-top:14px;">
+        <h3>🔍 What your chat data is telling you</h3>
+        <div id="ai_insights" style="line-height:1.55;">
+          Insights will appear after loading report data.
+        </div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h3 style="margin-top:0;">Leads</h3>
+        <div class="db-table-wrap">
+          <table class="db-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Channel</th>
+                <th>Page</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="leads_rows">
+              <tr><td colspan="6" class="db-subtitle">No leads available yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./assets/dashboard.core.js"></script>
+  <script src="./assets/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novu Advisor - Clients (Super Admin)</title>
+  <link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body>
+  <div class="db-app">
+    <aside class="db-sidebar">
+      <div class="db-brand">Novu Advisor</div>
+      <nav class="db-nav">
+        <a class="db-active" href="./clients.html">Clients</a>
+        <a href="./setup.html">Setup</a>
+        <a href="./advisor.html">Advisor</a>
+        <a href="./conversations.html">Conversations</a>
+        <a href="./report.html">Report</a>
+      </nav>
+    </aside>
+
+    <main class="db-main">
+      <header class="db-topbar">
+        <div>
+          <h1 class="db-title">Super Admin - Clients</h1>
+          <p class="db-subtitle">Manage multiple clients from a single control panel.</p>
+        </div>
+      </header>
+
+      <section class="db-card">
+        <div class="db-grid db-grid-2">
+          <div>
+            <label class="db-label" for="clients_api_url">API URL</label>
+            <input id="clients_api_url" class="db-input db-mono" placeholder="https://your-domain.com">
+          </div>
+          <div>
+            <label class="db-label" for="clients_master_key">Master Key</label>
+            <input id="clients_master_key" type="password" class="db-input" placeholder="ADMIN_MASTER_KEY">
+          </div>
+        </div>
+        <div class="db-row" style="justify-content:flex-end;margin-top:10px;">
+          <button id="clients_load_btn" class="db-btn db-btn-primary" type="button">Load Clients</button>
+        </div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <div class="db-table-wrap">
+          <table class="db-table">
+            <thead>
+              <tr>
+                <th>Name & ID</th>
+                <th>Industry</th>
+                <th>Website</th>
+                <th>Plan</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="clients_rows">
+              <tr><td colspan="7" class="db-subtitle">Load clients to begin.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./assets/dashboard.core.js"></script>
+  <script src="./assets/dashboard.clients.js"></script>
+</body>
+</html>

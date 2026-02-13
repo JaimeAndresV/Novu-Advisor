@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novu Advisor - Advisor Settings</title>
+  <link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body>
+  <div class="db-app">
+    <aside class="db-sidebar">
+      <div class="db-brand">Novu Advisor</div>
+      <nav class="db-nav">
+        <a href="./clients.html">Clients</a>
+        <a href="./setup.html">Setup</a>
+        <a class="db-active" href="./advisor.html">Advisor</a>
+        <a href="./conversations.html">Conversations</a>
+        <a href="./report.html">Report</a>
+      </nav>
+    </aside>
+
+    <main class="db-main">
+      <header class="db-topbar">
+        <div>
+          <h1 class="db-title">Advisor Configuration</h1>
+          <p class="db-subtitle">Train your advisor and tune behavior for the selected client.</p>
+        </div>
+      </header>
+
+      <!-- Active Client Header -->
+      <section class="db-card" style="background:#0f172a;color:#fff;padding:16px 24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div style="font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ACTIVE CLIENT</div>
+            <div style="font-size:20px;font-weight:700;" id="active_client_name">—</div>
+            <div style="font-size:12px;opacity:0.7;font-family:monospace;margin-top:2px;" id="active_client_id">—</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <a href="./advisor.html" class="db-btn" style="background:#c8a84b;color:#0f172a;font-weight:600;border:none;">Profile & Advisor</a>
+            <a href="./conversations.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Conversations</a>
+            <a href="./report.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Report</a>
+            <a href="./clients.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);margin-left:8px;">← Clients</a>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);font-size:13px;opacity:0.8;">
+          <b>Website to index:</b> <span id="active_client_url" style="font-family:monospace;">—</span>
+        </div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Client Setup Data (editable)</h2>
+        <p class="db-subtitle">This is the setup record of the selected client. Update it here anytime.</p>
+        <div class="db-grid db-grid-2">
+          <div>
+            <label class="db-label" for="adv_name">Business Name</label>
+            <input id="adv_name" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_industry">Industry</label>
+            <select id="adv_industry" class="db-select">
+              <option value="dental">Dental</option>
+              <option value="legal">Legal</option>
+              <option value="real_estate">Real Estate</option>
+              <option value="ecommerce">E-commerce</option>
+              <option value="medical">Medical</option>
+              <option value="saas">SaaS</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="education">Education</option>
+              <option value="consulting">Consulting</option>
+              <option value="construction">Construction</option>
+              <option value="beauty">Beauty & Wellness</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <label class="db-label" for="adv_description">Business Description</label>
+          <textarea id="adv_description" class="db-textarea"></textarea>
+        </div>
+        <div class="db-grid db-grid-3" style="margin-top:10px;">
+          <div>
+            <label class="db-label" for="adv_language">Language</label>
+            <select id="adv_language" class="db-select">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="adv_website_url">Website URL</label>
+            <input id="adv_website_url" class="db-input db-mono">
+          </div>
+          <div>
+            <label class="db-label" for="adv_consultant_name">Consultant Name</label>
+            <input id="adv_consultant_name" class="db-input">
+          </div>
+        </div>
+        <div class="db-grid db-grid-3" style="margin-top:10px;">
+          <div>
+            <label class="db-label" for="adv_consultant_role">Consultant Role</label>
+            <input id="adv_consultant_role" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_primary_color">Primary Color</label>
+            <input id="adv_primary_color" type="color" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_accent_color">Accent Color</label>
+            <input id="adv_accent_color" type="color" class="db-input">
+          </div>
+        </div>
+        <div class="db-grid db-grid-3" style="margin-top:10px;">
+          <div>
+            <label class="db-label" for="adv_contact_phone">Phone</label>
+            <input id="adv_contact_phone" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_contact_email">Email</label>
+            <input id="adv_contact_email" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_contact_whatsapp">WhatsApp URL</label>
+            <input id="adv_contact_whatsapp" class="db-input">
+          </div>
+        </div>
+        <div class="db-grid db-grid-3" style="margin-top:10px;">
+          <div>
+            <label class="db-label" for="adv_contact_telegram">Telegram URL</label>
+            <input id="adv_contact_telegram" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_contact_calendly">Calendly URL</label>
+            <input id="adv_contact_calendly" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="adv_contact_form_url">Contact Form URL</label>
+            <input id="adv_contact_form_url" class="db-input">
+          </div>
+        </div>
+        <div class="db-row" style="margin-top:14px;justify-content:flex-end;">
+          <button id="save_profile_btn" class="db-btn db-btn-dark" type="button">Save Client Profile</button>
+        </div>
+      </section>
+
+      <section class="db-card">
+        <h2 style="margin-top:0;">Train Your Advisor</h2>
+        <div class="db-row" style="justify-content:space-between;flex-wrap:wrap;">
+          <div>
+            <button id="crawl_btn" class="db-btn db-btn-primary" type="button">Index My Website</button>
+            <p id="crawl_status" class="db-subtitle" style="margin-top:8px;">Not indexed yet.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <h3 style="margin:0 0 8px;">Add manual knowledge</h3>
+          <form id="manual_chunk_form" class="db-grid">
+            <div>
+              <label class="db-label" for="chunk_title">Title</label>
+              <input id="chunk_title" class="db-input" placeholder="Pricing policy update">
+            </div>
+            <div>
+              <label class="db-label" for="chunk_content">Content</label>
+              <textarea id="chunk_content" class="db-textarea" placeholder="Add pricing details, policy rules, FAQs, or promotions not present on your website." required></textarea>
+            </div>
+            <div class="db-row" style="justify-content:flex-end;">
+              <button class="db-btn db-btn-dark" type="submit">Save Knowledge Chunk</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Knowledge Chunks</h2>
+        <div id="chunks_list" class="db-grid"></div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Custom Instructions</h2>
+        <label class="db-label" for="custom_instructions">Special Instructions</label>
+        <textarea id="custom_instructions" class="db-textarea" placeholder="E.g.: Always mention our free consultation offer. Our main competitor is X and we are better because Y. Current promotion: 20% off in November."></textarea>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">AI Settings</h2>
+        <div class="db-grid db-grid-3">
+          <div>
+            <label class="db-label" for="ai_provider">Provider</label>
+            <select id="ai_provider" class="db-select">
+              <option value="openai">OpenAI</option>
+              <option value="anthropic">Anthropic</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="ai_model">Model</label>
+            <select id="ai_model" class="db-select">
+              <option value="gpt-4o-mini">gpt-4o-mini (low cost)</option>
+              <option value="gpt-4.1-mini">gpt-4.1-mini (balanced)</option>
+              <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet (premium)</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="provider_key">API Key</label>
+            <input id="provider_key" class="db-input" type="password" placeholder="sk-...">
+          </div>
+        </div>
+        <div class="db-row" style="margin-top:14px;justify-content:flex-end;">
+          <button id="save_settings_btn" class="db-btn db-btn-outline" type="button">Save Settings</button>
+        </div>
+      </section>
+
+      <!-- Widget Appearance -->
+      <section class="db-card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Widget Appearance</h2>
+        <p class="db-subtitle">Choose how the chat button looks and where it appears on your client's website.</p>
+        <div class="db-grid db-grid-3" style="margin-top:10px;">
+          <div>
+            <label class="db-label" for="widget_style">Button Style</label>
+            <select id="widget_style" class="db-select">
+              <option value="circle">Circle (icon only)</option>
+              <option value="pill">Pill (icon + text)</option>
+              <option value="bar">Bar (full width bottom)</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="widget_position">Position</label>
+            <select id="widget_position" class="db-select">
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="widget_greeting">Custom Greeting</label>
+            <input id="widget_greeting" class="db-input" placeholder="Hi! How can I help you?">
+          </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div style="margin-top:16px;padding:20px;background:#1e293b;border-radius:12px;position:relative;min-height:120px;overflow:hidden;">
+          <div style="font-size:11px;opacity:0.5;color:#fff;margin-bottom:12px;">PREVIEW</div>
+          <div id="widget_preview" style="position:absolute;bottom:16px;right:16px;display:flex;align-items:center;gap:10px;">
+            <div id="preview_btn" style="width:64px;height:64px;border-radius:999px;background:#1a3a5c;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.3);cursor:pointer;position:relative;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" stroke-width="1.8"/></svg>
+              <span style="position:absolute;width:13px;height:13px;border-radius:999px;right:4px;bottom:6px;background:#10b981;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-row" style="margin-top:14px;justify-content:flex-end;">
+          <button id="save_widget_btn" class="db-btn db-btn-dark" type="button">Save Widget Settings</button>
+        </div>
+      </section>
+
+      <!-- Install Snippet -->
+      <section class="db-card" style="margin-top:14px;background:#0f172a;color:#fff;">
+        <h2 style="margin-top:0;color:#c8a84b;">Install Snippet</h2>
+        <p style="font-size:13px;opacity:0.8;">Paste this single line before <code>&lt;/body&gt;</code> on your client's website. No additional CSS link needed.</p>
+        <div style="margin-top:12px;background:#1e293b;border-radius:8px;padding:16px;position:relative;overflow-x:auto;">
+          <code id="install_snippet" style="font-size:13px;color:#e2e8f0;word-break:break-all;line-height:1.6;display:block;white-space:pre-wrap;"></code>
+          <button id="copy_snippet_btn" style="position:absolute;top:8px;right:8px;background:#c8a84b;color:#0f172a;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;">Copy</button>
+        </div>
+        <p style="font-size:12px;opacity:0.5;margin-top:8px;">Do NOT add a separate &lt;link&gt; for CSS. Do NOT use an iframe.</p>
+      </section>
+    </main>
+  </div>
+  <script src="./assets/dashboard.core.js"></script>
+  <script src="./assets/dashboard.js"></script>
+  <script src="./assets/dashboard.advisor.js"></script>
+</body>
+</html>

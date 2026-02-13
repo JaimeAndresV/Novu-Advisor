@@ -1,0 +1,77 @@
+.nv-body {
+  flex: 1;
+  background: #f8f9fa;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nv-msg {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  word-wrap: break-word;
+}
+
+.nv-msg-user {
+  align-self: flex-end;
+  background: var(--nv-primary);
+  color: #fff;
+  border-bottom-right-radius: 6px;
+}
+
+.nv-msg-bot {
+  align-self: flex-start;
+  background: #fff;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.09);
+  border-bottom-left-radius: 6px;
+}
+
+.nv-typing {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.nv-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #9ca3af;
+  animation: nv-bounce 1.1s infinite;
+}
+
+.nv-typing span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.nv-typing span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.nv-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.nv-channel {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: #111827;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.nv-channel:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+}

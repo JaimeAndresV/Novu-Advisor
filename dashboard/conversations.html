@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novu Advisor - Conversations</title>
+  <link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body>
+  <div class="db-app">
+    <aside class="db-sidebar">
+      <div class="db-brand">Novu Advisor</div>
+      <nav class="db-nav">
+        <a href="./clients.html">Clients</a>
+        <a href="./setup.html">Setup</a>
+        <a href="./advisor.html">Advisor</a>
+        <a class="db-active" href="./conversations.html">Conversations</a>
+        <a href="./report.html">Report</a>
+      </nav>
+    </aside>
+
+    <main class="db-main">
+      <header class="db-topbar">
+        <div>
+          <h1 class="db-title">Conversation History</h1>
+          <p id="conversations_hint" class="db-subtitle">Filter and inspect full visitor conversations.</p>
+        </div>
+      </header>
+
+      <!-- Active Client Header -->
+      <section class="db-card" style="background:#0f172a;color:#fff;padding:16px 24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div style="font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ACTIVE CLIENT</div>
+            <div style="font-size:20px;font-weight:700;" id="active_client_name">—</div>
+            <div style="font-size:12px;opacity:0.7;font-family:monospace;margin-top:2px;" id="active_client_id">—</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <a href="./advisor.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Profile & Advisor</a>
+            <a href="./conversations.html" class="db-btn" style="background:#c8a84b;color:#0f172a;font-weight:600;border:none;">Conversations</a>
+            <a href="./report.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);">Report</a>
+            <a href="./clients.html" class="db-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);margin-left:8px;">← Clients</a>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);font-size:13px;opacity:0.8;">
+          <b>Website:</b> <span id="active_client_url" style="font-family:monospace;">—</span>
+        </div>
+      </section>
+
+      <section class="db-card">
+        <div class="db-grid db-grid-4">
+          <div>
+            <label class="db-label" for="f_date">Date</label>
+            <input id="f_date" type="date" class="db-input">
+          </div>
+          <div>
+            <label class="db-label" for="f_intent">Intent</label>
+            <select id="f_intent" class="db-select">
+              <option value="">All</option>
+              <option value="info">Info</option>
+              <option value="price">Price</option>
+              <option value="contact">Contact</option>
+              <option value="complaint">Complaint</option>
+              <option value="objection">Objection</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="f_lead">Lead?</label>
+            <select id="f_lead" class="db-select">
+              <option value="">All</option>
+              <option value="1">Lead</option>
+              <option value="0">No lead</option>
+            </select>
+          </div>
+          <div>
+            <label class="db-label" for="f_lang">Language</label>
+            <select id="f_lang" class="db-select">
+              <option value="">All</option>
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <label class="db-label" for="search_messages">Search messages</label>
+          <input id="search_messages" class="db-input" placeholder="Search text in conversation history...">
+        </div>
+      </section>
+
+      <section class="db-card" style="margin-top:14px;">
+        <div class="db-table-wrap">
+          <table class="db-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Messages</th>
+                <th>Top Intent</th>
+                <th>Lead?</th>
+                <th>Language</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="conv_rows">
+              <tr>
+                <td colspan="7" class="db-subtitle">No conversations loaded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="conv_modal" class="db-modal">
+    <div class="db-modal-content">
+      <div class="db-row" style="justify-content:space-between;margin-bottom:8px;">
+        <h3 style="margin:0;">Conversation Details</h3>
+        <button class="db-btn db-btn-outline" onclick="document.getElementById('conv_modal').classList.remove('db-show')">Close</button>
+      </div>
+      <div class="db-chat-log" id="conv_chat_log">
+        <div class="db-bubble db-bubble-bot">Conversation messages will appear here.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/dashboard.core.js"></script>
+  <script src="./assets/dashboard.js"></script>
+  <script src="./assets/dashboard.conversations.js"></script>
+</body>
+</html>

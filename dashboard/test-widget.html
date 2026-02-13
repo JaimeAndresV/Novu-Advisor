@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Test - Pb Taxes</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: Arial, sans-serif;
+      background: #1e293b;
+      color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .info {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .info p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Widget Test Page - Pb Taxes</h1>
+    <div class="info">
+      <p><strong>Business ID:</strong> cf27ba58-5eab-4d8b-acb7-298687014df7</p>
+      <p><strong>Expected:</strong> You should see a circular blue button in the bottom-right corner</p>
+      <p><strong>Action:</strong> Click the button to open the chat panel</p>
+    </div>
+    
+    <h2>Contact Information</h2>
+    <div class="info">
+      <p><strong>Address:</strong> 4422 Northlake Blvd, Suite B, Palm Beach Gardens, FL 33418</p>
+      <p><strong>Phone:</strong> 3123263830</p>
+      <p><strong>Email:</strong> vimatolo@hotmail.com</p>
+    </div>
+  </div>
+
+  <!-- Novu Advisor Widget (only script needed, CSS loads inside Shadow DOM) -->
+  <script 
+    src="http://localhost:3000/widget/widget.js" 
+    data-business-id="cf27ba58-5eab-4d8b-acb7-298687014df7" 
+    data-api-url="http://localhost:3000"
+    data-position="bottom-right">
+  </script>
+</body>
+</html>
