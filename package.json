@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Universal AI business consultant SaaS installable with two lines of code.",
   "main": "server/index.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node server/index.js"
   },
