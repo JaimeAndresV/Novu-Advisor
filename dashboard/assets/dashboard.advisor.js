@@ -264,6 +264,20 @@
       }
     });
 
+    // AI Provider change - update model placeholder with smart defaults
+    $("#ai_provider")?.addEventListener("change", (e) => {
+      const modelInput = $("#ai_model");
+      if (!modelInput) return;
+      
+      const placeholders = {
+        openai: "gpt-4o-mini, gpt-4o, gpt-4-turbo, gpt-3.5-turbo",
+        anthropic: "claude-3-5-sonnet-latest, claude-3-5-haiku-latest, claude-3-opus-latest",
+        gemini: "gemini-1.5-flash, gemini-1.5-pro, gemini-2.0-flash-exp"
+      };
+      
+      modelInput.placeholder = placeholders[e.target.value] || placeholders.openai;
+    });
+
     await loadBusiness();
     await loadChunks();
   }

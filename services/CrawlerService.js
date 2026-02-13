@@ -197,30 +197,82 @@ class CrawlerService {
     const title = cleanText($("title").first().text());
     const description = cleanText($("meta[name='description']").attr("content") || "");
 
-    const blocks = [];
-    const seen = new Set();
-    const contentSelectors = [
-      "h1", "h2", "h3", "h4", "p", "li", "dt", "dd",
-      "table tr", "table td", "table th",
-      "[class*='price']", "[id*='price']",
-      "[class*='plan']", "[id*='plan']",
-      "[class*='pricing']", "[id*='pricing']",
-      "section[class*='price']", "section[id*='price']"
-    ].join(", ");
+    // Strategy: Extract complete semantic sections instead of individual elements
+    const sections = [];
+    const processedSections = new Set();
 
-    $(contentSelectors).each((_, el) => {
-      const text = cleanText($(el).text());
-      if (!text || seen.has(text)) {
-        return;
-      }
-      // Keep short lines when they look like pricing info (e.g. "$99/mo", "Desde $29", "Plan Pro").
-      if (text.length > 20 || this.looksLikePricing(text)) {
-        seen.add(text);
-        blocks.push(text);
+    // Priority 1: Capture complete pricing/plan sections
+    $("section, article, div").each((_, container) => {
+      const $container = $(container);
+      const classId = String($container.attr("class") || "") + String($container.attr("id") || "");
+      
+      // If this looks like a pricing/plan section, capture it whole
+      if (/price|pricing|plan|tier|package|paquete|precio/i.test(classId)) {
+        const fullText = cleanText($container.text());
+        if (fullText && fullText.length > 30 && !processedSections.has(fullText)) {
+          processedSections.add(fullText);
+          sections.push(fullText);
+          // Mark children as processed to avoid duplication
+          $container.find("*").each((_, child) => {
+            processedSections.add(cleanText($(child).text()));
+          });
+        }
       }
     });
 
-    const combined = cleanText([title, description, ...structuredBlocks, ...blocks].join("\n"));
+    // Priority 2: Capture main content sections (non-pricing)
+    $("main, article, [role='main'], .content, .main-content, #content").each((_, container) => {
+      const $container = $(container);
+      const sectionBlocks = [];
+      
+      // Group by headings
+      $container.find("h1, h2, h3").each((_, heading) => {
+        const $heading = $(heading);
+        const headingText = cleanText($heading.text());
+        if (!headingText || processedSections.has(headingText)) return;
+        
+        // Collect content under this heading until next heading
+        const contentParts = [headingText];
+        let $next = $heading.next();
+        
+        while ($next.length && !$next.is("h1, h2, h3")) {
+          const nextText = cleanText($next.text());
+          if (nextText && nextText.length > 15 && !processedSections.has(nextText)) {
+            contentParts.push(nextText);
+            processedSections.add(nextText);
+          }
+          $next = $next.next();
+        }
+        
+        if (contentParts.length > 1) {
+          processedSections.add(headingText);
+          sectionBlocks.push(contentParts.join("\n"));
+        }
+      });
+      
+      if (sectionBlocks.length > 0) {
+        sections.push(...sectionBlocks);
+      }
+    });
+
+    // Priority 3: Fallback - capture remaining significant text blocks
+    const fallbackBlocks = [];
+    const seen = new Set();
+    
+    $("h1, h2, h3, p, li, table").each((_, el) => {
+      const text = cleanText($(el).text());
+      if (!text || seen.has(text) || processedSections.has(text)) return;
+      
+      // Keep meaningful blocks or pricing-related short text
+      if (text.length > 30 || this.looksLikePricing(text)) {
+        seen.add(text);
+        fallbackBlocks.push(text);
+      }
+    });
+
+    sections.push(...fallbackBlocks);
+
+    const combined = cleanText([title, description, ...structuredBlocks, ...sections].join("\n\n"));
 
     return {
       title: title || pageUrl,
