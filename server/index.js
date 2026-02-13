@@ -18,6 +18,11 @@ const chatRoutes = require("../routes/chat");
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
+// Trust first proxy (Railway, Render, etc.) so express-rate-limit reads the
+// real client IP from X-Forwarded-For instead of throwing
+// ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+app.set("trust proxy", 1);
+
 app.disable("x-powered-by");
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
