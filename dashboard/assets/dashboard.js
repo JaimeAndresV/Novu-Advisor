@@ -46,6 +46,17 @@
     document.querySelectorAll("[data-next]").forEach((b) => b.addEventListener("click", () => show(current + 1)));
     document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(current - 1)));
 
+    const contrastText = (hex, dark = "#0f172a", light = "#ffffff") => {
+      let color = String(hex || "").trim().replace("#", "");
+      if (color.length === 3) color = color.split("").map((c) => c + c).join("");
+      if (!/^[0-9a-fA-F]{6}$/.test(color)) return dark;
+      const r = parseInt(color.slice(0, 2), 16);
+      const g = parseInt(color.slice(2, 4), 16);
+      const b = parseInt(color.slice(4, 6), 16);
+      const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+      return yiq >= 150 ? dark : light;
+    };
+
     const bindPreview = () => {
       const name = ($("#consultant_name") || {}).value || "Alex";
       const role = ($("#consultant_role") || {}).value || "Business Advisor";
@@ -54,8 +65,14 @@
       const title = $("#pv-name"), sub = $("#pv-role"), head = $("#pv-head"), send = $("#pv-send");
       if (title) title.textContent = name;
       if (sub) sub.textContent = role;
-      if (head) head.style.background = primary;
-      if (send) send.style.background = accent;
+      if (head) {
+        head.style.background = primary;
+        head.style.color = contrastText(primary);
+      }
+      if (send) {
+        send.style.background = accent;
+        send.style.color = contrastText(accent);
+      }
     };
     ["consultant_name", "consultant_role", "primary_color", "accent_color"].forEach((id) => {
       const el = $("#" + id);

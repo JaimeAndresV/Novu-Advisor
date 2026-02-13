@@ -6,6 +6,8 @@
   color: #111827;
   --nv-primary: #1a3a5c;
   --nv-accent: #c8a84b;
+  --nv-on-primary: #ffffff;
+  --nv-on-accent: #0f172a;
   --nv-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   display: block;
   position: relative;
@@ -35,7 +37,7 @@
   border: none;
   border-radius: 999px;
   background: var(--nv-primary);
-  color: #fff;
+  color: var(--nv-on-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -142,7 +144,7 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
-  color: #fff;
+  color: var(--nv-on-primary);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent), var(--nv-primary);
 }
 
@@ -178,7 +180,7 @@
 .nv-close {
   border: none;
   background: transparent;
-  color: #fff;
+  color: var(--nv-on-primary);
   font-size: 20px;
   cursor: pointer;
   width: 32px;
@@ -222,7 +224,7 @@
   height: 42px;
   cursor: pointer;
   background: var(--nv-accent);
-  color: #111827;
+  color: var(--nv-on-accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;

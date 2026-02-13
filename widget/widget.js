@@ -14,6 +14,16 @@
   function esc(s) { return String(s || "").replace(/[&<>"']/g, function (m) { return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]; }); }
   function isRtlDoc() { return (document.documentElement.getAttribute("dir") || "").toLowerCase() === "rtl"; }
   function safeUrl(url) { try { var u = new URL(url, location.href); return /^https?:|^mailto:|^tel:/.test(u.protocol + "") ? u.toString() : "#"; } catch (_) { return "#"; } }
+  function contrastText(hex, dark, light) {
+    var color = String(hex || "").trim().replace("#", "");
+    if (color.length === 3) color = color.split("").map(function (c) { return c + c; }).join("");
+    if (!/^[0-9a-fA-F]{6}$/.test(color)) return dark;
+    var r = parseInt(color.slice(0, 2), 16);
+    var g = parseInt(color.slice(2, 4), 16);
+    var b = parseInt(color.slice(4, 6), 16);
+    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return yiq >= 150 ? dark : light;
+  }
 
   function sanitizeHTML(html) {
     var allow = ["B", "BR", "UL", "LI", "A"];
@@ -208,7 +218,17 @@
       link.href = API_URL.replace(/\/$/, "") + "/widget/widget.css?v=" + Date.now();
 
       var styleEl = document.createElement("style");
-      styleEl.textContent = ":host{--nv-primary:" + (config.primary_color || "#1a3a5c") + ";--nv-accent:" + (config.accent_color || "#c8a84b") + ";}";
+      var primary = config.primary_color || "#1a3a5c";
+      var accent = config.accent_color || "#c8a84b";
+      var onPrimary = contrastText(primary, "#0f172a", "#ffffff");
+      var onAccent = contrastText(accent, "#0f172a", "#ffffff");
+      styleEl.textContent =
+        ":host{" +
+        "--nv-primary:" + primary + ";" +
+        "--nv-accent:" + accent + ";" +
+        "--nv-on-primary:" + onPrimary + ";" +
+        "--nv-on-accent:" + onAccent + ";" +
+        "}";
 
       var avatar = config.avatar_url
         ? '<img class="nv-avatar" src="' + esc(config.avatar_url) + '" alt="">'
