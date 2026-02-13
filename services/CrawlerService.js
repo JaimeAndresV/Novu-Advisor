@@ -220,51 +220,40 @@ class CrawlerService {
       }
     });
 
-    // Priority 2: Capture main content sections (non-pricing)
-    $("main, article, [role='main'], .content, .main-content, #content").each((_, container) => {
+    // Priority 2: Capture main content (broad selectors for SPAs and varied markup)
+    const mainSelectors = "main, article, [role='main'], #content, [class*='content'], [class*='Content'], [class*='section'], [class*='Section'], [class*='wrapper'], [class*='container']";
+    $(mainSelectors).each((_, container) => {
       const $container = $(container);
       const sectionBlocks = [];
-      
-      // Group by headings
-      $container.find("h1, h2, h3").each((_, heading) => {
+
+      $container.find("h1, h2, h3, h4").each((_, heading) => {
         const $heading = $(heading);
         const headingText = cleanText($heading.text());
         if (!headingText || processedSections.has(headingText)) return;
-        
-        // Collect content under this heading until next heading
-        const contentParts = [headingText];
-        let $next = $heading.next();
-        
-        while ($next.length && !$next.is("h1, h2, h3")) {
-          const nextText = cleanText($next.text());
-          if (nextText && nextText.length > 15 && !processedSections.has(nextText)) {
-            contentParts.push(nextText);
-            processedSections.add(nextText);
-          }
-          $next = $next.next();
-        }
-        
-        if (contentParts.length > 1) {
-          processedSections.add(headingText);
-          sectionBlocks.push(contentParts.join("\n"));
-        }
+
+        // All siblings until next heading (nextUntil), then get their full text
+        const $untilNext = $heading.nextUntil("h1, h2, h3, h4");
+        const blockText = cleanText($untilNext.map((__, n) => $(n).text()).get().join(" "));
+        if (!blockText || blockText.length < 10) return;
+
+        const fullBlock = headingText + "\n" + blockText;
+        if (processedSections.has(fullBlock)) return;
+        processedSections.add(headingText);
+        processedSections.add(fullBlock);
+        sectionBlocks.push(fullBlock);
       });
-      
-      if (sectionBlocks.length > 0) {
-        sections.push(...sectionBlocks);
-      }
+
+      if (sectionBlocks.length > 0) sections.push(...sectionBlocks);
     });
 
-    // Priority 3: Fallback - capture remaining significant text blocks
+    // Priority 3: Fallback - any significant text block (lower threshold)
     const fallbackBlocks = [];
     const seen = new Set();
-    
-    $("h1, h2, h3, p, li, table").each((_, el) => {
+
+    $("h1, h2, h3, h4, p, li, td, th, [class*='price'], [class*='plan']").each((_, el) => {
       const text = cleanText($(el).text());
       if (!text || seen.has(text) || processedSections.has(text)) return;
-      
-      // Keep meaningful blocks or pricing-related short text
-      if (text.length > 30 || this.looksLikePricing(text)) {
+      if (text.length > 20 || this.looksLikePricing(text)) {
         seen.add(text);
         fallbackBlocks.push(text);
       }
@@ -272,7 +261,14 @@ class CrawlerService {
 
     sections.push(...fallbackBlocks);
 
-    const combined = cleanText([title, description, ...structuredBlocks, ...sections].join("\n\n"));
+    // Priority 4: If we still have very little, use full body text (catches JS shells and minimal HTML)
+    let combined = cleanText([title, description, ...structuredBlocks, ...sections].join("\n\n"));
+    const bodyRaw = cleanText($("body").text());
+    if (bodyRaw && bodyRaw.length > 200 && combined.length < 400) {
+      combined = cleanText([combined, bodyRaw].join("\n\n"));
+    } else if (combined.length < 300 && bodyRaw) {
+      combined = cleanText([title, description, bodyRaw].join("\n\n"));
+    }
 
     return {
       title: title || pageUrl,
