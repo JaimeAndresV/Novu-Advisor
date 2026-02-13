@@ -75,7 +75,12 @@ router.post("/login", async (req, res) => {
 router.post("/master-login", (req, res) => {
   try {
     const businessId = String(req.body?.business_id || "").trim();
-    const masterKey = String(req.body?.master_key || "").trim();
+    const masterKey = String(
+      req.headers["x-admin-master-key"] ||
+      req.body?.master_key ||
+      req.query?.master_key ||
+      ""
+    ).trim();
     const configuredMaster = String(process.env.ADMIN_MASTER_KEY || "").trim();
 
     if (!businessId || !masterKey) {

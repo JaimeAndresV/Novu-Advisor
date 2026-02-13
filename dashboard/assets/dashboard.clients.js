@@ -26,6 +26,9 @@
   async function masterLoginForBusiness(businessId, masterKey) {
     const response = await api("/api/auth/master-login", {
       method: "POST",
+      headers: {
+        "x-admin-master-key": masterKey
+      },
       body: JSON.stringify({
         business_id: businessId,
         master_key: masterKey
@@ -76,7 +79,11 @@
       const apiUrl = apiInput.value.trim() || location.origin;
       const masterKey = masterInput.value.trim();
       setState({ apiUrl, masterKey });
-      const data = await api(`/api/business?master_key=${encodeURIComponent(masterKey)}`);
+      const data = await api(`/api/business?master_key=${encodeURIComponent(masterKey)}`, {
+        headers: {
+          "x-admin-master-key": masterKey
+        }
+      });
       renderRows(data.businesses || [], masterKey);
     } catch (error) {
       alert(error.message || "Unable to load clients.");

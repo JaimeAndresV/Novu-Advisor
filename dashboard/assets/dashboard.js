@@ -94,7 +94,7 @@
         const created = await api("/api/business", { method: "POST", headers, body: JSON.stringify(payload) });
         setState({ businessId: created.id, adminPassword: created.admin_password, jwt: "" });
         const closeScriptTag = "</" + "script>";
-        const snippet = `<link rel="stylesheet" href="${state.apiUrl}/widget/widget.css">\n<script src="${state.apiUrl}/widget/widget.js" data-business-id="${created.id}" data-api-url="${state.apiUrl}" data-position="bottom-right">${closeScriptTag}`;
+        const snippet = `<script src="${state.apiUrl}/widget/widget.js" data-business-id="${created.id}" data-api-url="${state.apiUrl}" data-position="bottom-right">${closeScriptTag}`;
         if ($("#install_snippet")) $("#install_snippet").value = snippet;
         if ($("#setup_success")) $("#setup_success").style.display = "";
         if ($("#saved_business_id")) $("#saved_business_id").textContent = created.id || "-";
