@@ -152,18 +152,20 @@
         </div>
 
         <div style="margin-top:14px;">
-          <h3 style="margin:0 0 8px;">Add manual knowledge</h3>
+          <h3 style="margin:0 0 4px;">Add manual knowledge</h3>
+          <p class="db-subtitle" style="margin:0 0 10px;">Facts the advisor can use when answering (prices, FAQs, policies). Stored in the knowledge base and searched when visitors ask questions.</p>
           <form id="manual_chunk_form" class="db-grid">
             <div>
               <label class="db-label" for="chunk_title">Title</label>
-              <input id="chunk_title" class="db-input" placeholder="Pricing policy update">
+              <input id="chunk_title" class="db-input" placeholder="e.g. Pricing policy update">
             </div>
             <div>
               <label class="db-label" for="chunk_content">Content</label>
-              <textarea id="chunk_content" class="db-textarea" placeholder="Add pricing details, policy rules, FAQs, or promotions not present on your website." required></textarea>
+              <textarea id="chunk_content" class="db-textarea" placeholder="Paste or type the information (pricing, FAQs, promotions) that is not on your website." required></textarea>
             </div>
-            <div class="db-row" style="justify-content:flex-end;">
-              <button class="db-btn db-btn-dark" type="submit">Save Knowledge Chunk</button>
+            <div class="db-row" style="justify-content:flex-end;align-items:center;gap:12px;">
+              <span id="manual_chunk_status" class="db-subtitle" style="min-height:20px;"></span>
+              <button class="db-btn db-btn-primary" type="submit">Add to knowledge base</button>
             </div>
           </form>
         </div>
@@ -171,17 +173,24 @@
 
       <section class="db-card" style="margin-top:14px;">
         <h2 style="margin-top:0;">Knowledge Chunks</h2>
+        <p class="db-subtitle">Indexed pages + manual entries. The advisor uses these to answer questions.</p>
         <div id="chunks_list" class="db-grid"></div>
       </section>
 
       <section class="db-card" style="margin-top:14px;">
         <h2 style="margin-top:0;">Custom Instructions</h2>
-        <label class="db-label" for="custom_instructions">Special Instructions</label>
-        <textarea id="custom_instructions" class="db-textarea" placeholder="E.g.: Always mention our free consultation offer. Our main competitor is X and we are better because Y. Current promotion: 20% off in November."></textarea>
+        <p class="db-subtitle" style="margin-bottom:10px;">Rules for the advisor on every conversation (tone, what to always mention, current offers). Not searchable data — fixed instructions.</p>
+        <label class="db-label" for="custom_instructions">Special instructions</label>
+        <textarea id="custom_instructions" class="db-textarea" placeholder="E.g.: Always mention our free consultation. Current promotion: 20% off in November."></textarea>
+        <div class="db-row" style="margin-top:10px;justify-content:flex-end;align-items:center;gap:12px;">
+          <span id="instructions_status" class="db-subtitle" style="min-height:20px;"></span>
+          <button id="save_instructions_btn" class="db-btn db-btn-outline" type="button">Save instructions</button>
+        </div>
       </section>
 
       <section class="db-card" style="margin-top:14px;">
         <h2 style="margin-top:0;">AI Settings</h2>
+        <p class="db-subtitle">Provider and API key for this client. Key is stored securely.</p>
         <div class="db-grid db-grid-3">
           <div>
             <label class="db-label" for="ai_provider">Provider</label>
@@ -205,7 +214,7 @@
           </div>
         </div>
         <div class="db-row" style="margin-top:14px;justify-content:flex-end;">
-          <button id="save_settings_btn" class="db-btn db-btn-outline" type="button">Save Settings</button>
+          <button id="save_settings_btn" class="db-btn db-btn-outline" type="button">Save AI provider & key</button>
         </div>
       </section>
 

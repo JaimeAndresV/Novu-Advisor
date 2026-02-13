@@ -128,9 +128,16 @@
       });
   }
 
+  function updateMobileFullscreen() {
+    var isNarrow = (typeof window !== "undefined" && window.innerWidth <= 480);
+    if (isOpen && isNarrow) root.classList.add("nv-mobile-fullscreen");
+    else root.classList.remove("nv-mobile-fullscreen");
+  }
+
   // ── Panel open/close ──
   function openPanel() {
     isOpen = true; root.classList.add("nv-open");
+    updateMobileFullscreen();
     if (!greeted) {
       greeted = true;
       setTimeout(function () {
@@ -149,6 +156,7 @@
   }
   function closePanel() {
     isOpen = false; root.classList.remove("nv-open");
+    root.classList.remove("nv-mobile-fullscreen");
     if (useJsPosition) jsPosition();
   }
 
@@ -157,6 +165,7 @@
     els.close.addEventListener("click", closePanel);
     els.send.addEventListener("click", function () { var t = els.input.value.trim(); if (t) { els.input.value = ""; sendMessage(t); } });
     els.input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); var t = els.input.value.trim(); if (t) { els.input.value = ""; sendMessage(t); } } });
+    window.addEventListener("resize", function () { if (isOpen) updateMobileFullscreen(); });
   }
 
   // ── POSITIONING ──

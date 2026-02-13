@@ -174,26 +174,52 @@
       }
     });
 
-    // Manual chunk
+    // Manual chunk — add to knowledge base with clear feedback
+    const manualChunkStatus = $("#manual_chunk_status");
     $("#manual_chunk_form")?.addEventListener("submit", async (e) => {
       e.preventDefault();
-      await api(`/api/business/${state.businessId}/chunks`, {
-        method: "POST",
-        body: JSON.stringify({
-          title: $("#chunk_title").value.trim(),
-          content: $("#chunk_content").value.trim()
-        })
-      });
-      $("#chunk_title").value = "";
-      $("#chunk_content").value = "";
-      loadChunks();
+      if (manualChunkStatus) manualChunkStatus.textContent = "";
+      const title = $("#chunk_title").value.trim();
+      const content = $("#chunk_content").value.trim();
+      if (!content) {
+        if (manualChunkStatus) manualChunkStatus.textContent = "Enter content.";
+        return;
+      }
+      try {
+        await api(`/api/business/${state.businessId}/chunks`, {
+          method: "POST",
+          body: JSON.stringify({ title: title || "Manual", content })
+        });
+        $("#chunk_title").value = "";
+        $("#chunk_content").value = "";
+        if (manualChunkStatus) manualChunkStatus.textContent = "✅ Added to knowledge base.";
+        loadChunks();
+        setTimeout(() => { if (manualChunkStatus) manualChunkStatus.textContent = ""; }, 4000);
+      } catch (error) {
+        if (manualChunkStatus) manualChunkStatus.textContent = error.message || "Could not save.";
+      }
     });
 
-    // Save AI settings
+    // Save instructions only (Custom Instructions section)
+    const instructionsStatus = $("#instructions_status");
+    $("#save_instructions_btn")?.addEventListener("click", async () => {
+      if (instructionsStatus) instructionsStatus.textContent = "";
+      try {
+        await api(`/api/business/${state.businessId}`, {
+          method: "PUT",
+          body: JSON.stringify({ system_prompt: $("#custom_instructions").value.trim() })
+        });
+        if (instructionsStatus) instructionsStatus.textContent = "✅ Instructions saved.";
+        setTimeout(() => { if (instructionsStatus) instructionsStatus.textContent = ""; }, 4000);
+      } catch (error) {
+        if (instructionsStatus) instructionsStatus.textContent = error.message || "Could not save.";
+      }
+    });
+
+    // Save AI provider & key only (no instructions)
     $("#save_settings_btn")?.addEventListener("click", async () => {
       try {
         const payload = {
-          system_prompt: $("#custom_instructions").value.trim(),
           ai_provider: $("#ai_provider").value,
           ai_model: $("#ai_model").value
         };
@@ -203,10 +229,10 @@
         $("#provider_key").value = "";
         const updated = await loadBusiness();
         status.textContent = updated.has_ai_api_key
-          ? "✅ Advisor settings saved. AI key is stored."
-          : "✅ Advisor settings saved.";
+          ? "✅ AI provider and key saved."
+          : "✅ AI settings saved.";
       } catch (error) {
-        status.textContent = error.message || "Unable to save settings.";
+        status.textContent = error.message || "Unable to save.";
       }
     });
 
