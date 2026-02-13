@@ -254,7 +254,9 @@
         "--nv-accent:" + accent + ";" +
         "--nv-on-primary:" + onPrimary + ";" +
         "--nv-on-accent:" + onAccent + ";" +
-        "}";
+        "}" +
+        /* Critical inline styles to prevent FOUC before widget.css loads */
+        ".nv-panel{opacity:0!important;transform:scale(0.8)!important;pointer-events:none!important;}";
 
       var avatar = config.avatar_url
         ? '<img class="nv-avatar" src="' + esc(config.avatar_url) + '" alt="">'
