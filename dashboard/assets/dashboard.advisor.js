@@ -76,6 +76,36 @@
     }
   }
 
+  const AI_MODELS = {
+    openai: [
+      { value: "gpt-4o-mini", label: "gpt-4o-mini (económico)" },
+      { value: "gpt-4o", label: "gpt-4o" },
+      { value: "gpt-4-turbo", label: "gpt-4-turbo" },
+      { value: "gpt-4.1-mini", label: "gpt-4.1-mini" },
+      { value: "gpt-3.5-turbo", label: "gpt-3.5-turbo" }
+    ],
+    anthropic: [
+      { value: "claude-3-5-sonnet-latest", label: "claude-3-5-sonnet" },
+      { value: "claude-3-5-haiku-latest", label: "claude-3-5-haiku" },
+      { value: "claude-3-opus-latest", label: "claude-3-opus" }
+    ],
+    gemini: [
+      { value: "gemini-1.5-flash", label: "gemini-1.5-flash (rápido)" },
+      { value: "gemini-1.5-pro", label: "gemini-1.5-pro" },
+      { value: "gemini-2.0-flash-exp", label: "gemini-2.0-flash-exp" },
+      { value: "gemini-1.5-flash-8b", label: "gemini-1.5-flash-8b" }
+    ]
+  };
+
+  function setModelOptions(provider, currentModel) {
+    const sel = $("#ai_model");
+    if (!sel) return;
+    const list = AI_MODELS[provider] || AI_MODELS.openai;
+    sel.innerHTML = list.map((m) => `<option value="${m.value}">${m.label}</option>`).join("");
+    const hasCurrent = list.some((m) => m.value === currentModel);
+    sel.value = hasCurrent ? currentModel : (list[0] && list[0].value);
+  }
+
   function applyBusinessToForm(business) {
     const map = {
       adv_name: business.name || "",
@@ -105,6 +135,8 @@
       const el = document.getElementById(id);
       if (el) el.value = value;
     });
+
+    setModelOptions(business.ai_provider || "openai", business.ai_model || "gpt-4o-mini");
 
     const keyInput = document.getElementById("provider_key");
     if (keyInput) {
@@ -290,18 +322,11 @@
       }
     });
 
-    // AI Provider change - update model placeholder with smart defaults
+    // AI Provider change — reload model dropdown with that provider's models
     $("#ai_provider")?.addEventListener("change", (e) => {
-      const modelInput = $("#ai_model");
-      if (!modelInput) return;
-      
-      const placeholders = {
-        openai: "gpt-4o-mini, gpt-4o, gpt-4-turbo, gpt-3.5-turbo",
-        anthropic: "claude-3-5-sonnet-latest, claude-3-5-haiku-latest, claude-3-opus-latest",
-        gemini: "gemini-1.5-flash, gemini-1.5-pro, gemini-2.0-flash-exp"
-      };
-      
-      modelInput.placeholder = placeholders[e.target.value] || placeholders.openai;
+      const provider = e.target.value;
+      const currentModel = $("#ai_model")?.value || "";
+      setModelOptions(provider, currentModel);
     });
 
     await loadBusiness();
