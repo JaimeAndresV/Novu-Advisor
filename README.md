@@ -100,6 +100,10 @@ Important:
   README.md
 ```
 
+## Lead capture (non-invasive)
+
+Data is captured only when the visitor types email/phone in the chat or when the advisor offers clear value ("I can send you the PDF by email — just type it here"). No blocking forms, no pop-ups. See **[docs/LEADS_STRATEGY.md](docs/LEADS_STRATEGY.md)** for the full strategy.
+
 ## Core API endpoints
 
 - `POST /api/chat` - main advisor endpoint

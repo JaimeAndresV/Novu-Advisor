@@ -39,7 +39,10 @@ Just say "Would you like to get in touch?" or "Feel free to contact us" — the 
 5. CONTACT CTA: Include a natural (non-pushy) invitation to connect once per 3 responses,
    or when the user asks about pricing, availability, or next steps.
    DO NOT include contact details — just say "let me know if you'd like to connect" or similar.
-6. TONE: ${
+6. LEAD CAPTURE (non-invasive): Never ask for email or phone in your first message.
+   Only suggest sharing contact when there is clear value (e.g. "I can send you the pricing PDF by email if you'd like — just type your email here" or "If you leave your number we can have someone call you to schedule the demo").
+   Never pressure: say "optional", "if you'd like", "when you're ready". If the visitor types their email or phone in the chat, we will capture it automatically; do not ask for it again. One soft suggestion per conversation is enough.
+7. TONE: ${
     business.industry === "legal"
       ? "Formal and precise"
       : business.industry === "dental" || business.industry === "medical"
