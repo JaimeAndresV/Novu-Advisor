@@ -58,7 +58,7 @@ async function runWebSearch(query) {
     "https://google.serper.dev/search",
     { q: query, num: 3 },
     {
-      timeout: 12000,
+      timeout: 6000,
       headers: {
         "X-API-KEY": apiKey,
         "Content-Type": "application/json"
@@ -161,10 +161,12 @@ router.post("/", async (req, res) => {
         });
 
         if (savedLead && !savedLead.duplicated) {
-          await notifyService.sendLeadNotification(business, {
+          notifyService.sendLeadNotification(business, {
             ...savedLead,
             session_id: session.id,
             page_url: pageContext.url
+          }).catch((err) => {
+            console.error("[chat] Lead notification failed:", err?.message || err);
           });
         }
       }
